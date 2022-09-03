@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "spotify_update_new_release_playlist"
+version = "0.1.0"
+description = ""
+authors = ["Jason M. Owens"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "spotify_update_new_release_playlist"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+tekore = "^4.4.0"
+
+[tool.poetry.group.test.dependencies]
+isort = "^5.10.1"
+prospector = {extras = ["with_everything"], version = "^1.7.7"}
+black = "^22.8.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
