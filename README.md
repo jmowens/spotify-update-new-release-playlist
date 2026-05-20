@@ -11,7 +11,7 @@ It is assumed you have:
 - A playlist that you want this script to update
 - [Spotify API access](https://developer.spotify.com/)
 
-You will need to create a Python environment to run the script in. You can use [poetry](https://python-poetry.org/docs/) with the project's toml file. The only dependency is [tekore](https://tekore.readthedocs.io/en/stable/index.html) so it should be easy to manually setup an environment.
+You will need to create a Python environment to run the script in. You can use [uv](https://docs.astral.sh/uv/) with the project's toml file. The only dependency is [tekore](https://tekore.readthedocs.io/en/stable/index.html) so it should be easy to manually setup an environment. For example, run `uv run python .\spotify_update_new_release_playlist\main.py` from the command line.
 
 In whatever directory you run the script from, create a `settings.cfg` file to store a few pieces of information:
 
