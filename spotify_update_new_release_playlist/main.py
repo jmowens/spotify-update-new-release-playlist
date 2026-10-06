@@ -50,21 +50,25 @@ def settings_config_to_file(settings_config: ConfigParser) -> None:
 def get_spotify_client(settings_config: ConfigParser) -> tk.Spotify:
     if os.path.isfile(TEKORE_CONFIG_FILENAME):
         tekore_config = tk.config_from_file(TEKORE_CONFIG_FILENAME, return_refresh=True)
-        user_token = tk.refresh_user_token(*tekore_config[:2], tekore_config[3])
-    else:
-        user_token = tk.prompt_for_user_token(
-            settings_config["SPOTIFY"]["CLIENT_ID"],
-            settings_config["SPOTIFY"]["CLIENT_SECRET"],
-            settings_config["SPOTIFY"]["REDIRECT_URI"],
-            scope=SPOTIFY_SCOPE,
-        )
-        tekore_config = (
-            settings_config["SPOTIFY"]["CLIENT_ID"],
-            settings_config["SPOTIFY"]["CLIENT_SECRET"],
-            settings_config["SPOTIFY"]["REDIRECT_URI"],
-            user_token.refresh_token,
-        )
-        tk.config_to_file(TEKORE_CONFIG_FILENAME, tekore_config)
+        try:
+            user_token = tk.refresh_user_token(*tekore_config[:2], tekore_config[3])
+            return tk.Spotify(user_token, max_limits_on=True, chunked_on=True)
+        except tk.RefreshTokenInvalid:
+            pass
+
+    user_token = tk.prompt_for_user_token(
+        settings_config["SPOTIFY"]["CLIENT_ID"],
+        settings_config["SPOTIFY"]["CLIENT_SECRET"],
+        settings_config["SPOTIFY"]["REDIRECT_URI"],
+        scope=SPOTIFY_SCOPE,
+    )
+    tekore_config = (
+        settings_config["SPOTIFY"]["CLIENT_ID"],
+        settings_config["SPOTIFY"]["CLIENT_SECRET"],
+        settings_config["SPOTIFY"]["REDIRECT_URI"],
+        user_token.refresh_token,
+    )
+    tk.config_to_file(TEKORE_CONFIG_FILENAME, tekore_config)
     return tk.Spotify(user_token, max_limits_on=True, chunked_on=True)
 
 
